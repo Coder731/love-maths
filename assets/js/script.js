@@ -45,6 +45,14 @@ function runGame(gameType) {
         displayMultiplyQuestion(num1, num2);
     } else if (gameType === "subtract") {
         displaySubtractQuestion(num1, num2);
+    } else if (gameType === "division") {
+        if (((num1/num2)- Math.floor(num1/num2)) === 0) {
+            displayDivisionQuestion(num1, num2);
+            console.log("hello");
+        } else {
+            alert(`go again num1/num2 = ${num1/num2}`);
+
+        }
     } else {
         alert(`Unknown game type: ${gameType}`);
         throw `Unknown game type: ${gameType}.Aborting!`;
@@ -76,7 +84,7 @@ function checkAnswer() {
 
 /**
  * Gets the operands (the numbers) and the operator (plus, minus etc)
- * directrly from the dom, and returns the correct answer.
+ * directly from the dom, and returns the correct answer.
  */
 
 function calculateCorrectAnswer() {
@@ -91,6 +99,8 @@ function calculateCorrectAnswer() {
         return [operand1 * operand2, "multiply"];
     } else if (operator === "-") {
         return [operand1 - operand2, "subtract"];
+    } else if (operator === "/") {
+        return [operand1 / operand2, "division"];
     } else {
         alert(`Unimplemented operator ${operator}`);
         throw `Unimplemented operator ${operator}. Aborting!`;
@@ -137,5 +147,23 @@ function displayMultiplyQuestion(operand1, operand2) {
     document.getElementById('operand1').textContent = operand1;
     document.getElementById('operand2').textContent = operand2;
     document.getElementById('operator').textContent = "x";
+
+}
+
+function displayDivisionQuestion(operand1, operand2) {
+    
+    document.getElementById('operator').textContent = "/";
+    if (operand1 > operand2) {
+        document.getElementById("operand1").textContent = operand1;
+    } 
+    // else if (operand2 > operand1) {
+    //     document.getElementById("operand1").textContent = operand2;
+    // }
+    if (operand1 > operand2) {
+        document.getElementById("operand2").textContent = operand2;
+    } 
+    // else if (operand2 > operand1) {
+    //     document.getElementById("operand2").textContent = operand1;
+    // }
 
 }
