@@ -1,6 +1,13 @@
 //Wait for the DOM to finish loading before running the game
 // Get the button elements and add event listeners to them
 
+let num1;
+let num2;
+let num3;
+let num4;
+let operand1;
+let operand2;
+
 document.addEventListener("DOMContentLoaded", function(){
     let buttons = document.getElementsByTagName("button");
 
@@ -10,6 +17,9 @@ document.addEventListener("DOMContentLoaded", function(){
                 checkAnswer();
             } else {
                 let gameType = this.getAttribute("data-type");
+                let now = new Date;
+                // https://stackoverflow.com/questions/8935414/getminutes-0-9-how-to-display-two-digit-numbers https://stackoverflow.com/questions/13955738/javascript-get-the-second-digit-from-a-number 
+                console.log( (now.getMinutes()<10?'0':'') + now.getMinutes() + ":" + (now.getSeconds()<10?'0':'') + now.getSeconds() + " at click" );
                 runGame(gameType);
             }
         });
@@ -36,8 +46,8 @@ function runGame(gameType) {
     document.getElementById("answer-box").focus();
 
     //Creates two random numbers between 1 and 25
-    let num1 = Math.floor(Math.random() * 25) + 1;
-    let num2 = Math.floor(Math.random() * 25) + 1;
+    num1 = Math.floor(Math.random() * 25) + 1;
+    num2 = Math.floor(Math.random() * 25) + 1;
 
     if (gameType === "addition") {
         displayAdditionQuestion(num1, num2);
@@ -46,11 +56,21 @@ function runGame(gameType) {
     } else if (gameType === "subtract") {
         displaySubtractQuestion(num1, num2);
     } else if (gameType === "division") {
-        if (((num1/num2)- Math.floor(num1/num2)) === 0) {
-            displayDivisionQuestion(num1, num2);
-            console.log("hello");
-        } else {
-            alert(`go again num1/num2 = ${num1/num2}`);
+        let operand1old = parseInt(document.getElementById('operand1').innerText);
+        let operand2old = parseInt(document.getElementById('operand2').innerText);
+        let operand1new = num1;
+        let operand2new = num2;
+        console.log("currently: " + "operand1old = "+ operand1old + ", operand2old = " + operand2old + ", num1 = " + num1 + ", num2 = " + num2);
+        if (!(operand1old === operand1new && operand2new === operand2new) /*&& operand1old !== operand2new*/) {
+            if ((((num1/num2)- Math.floor(num1/num2)) === 0)/*&&(operand1!==num1&&operand2!==num2)*/) {
+                displayDivisionQuestion(num1, num2);
+                console.log("proposed: " + "operand1old = "+ operand1old + ", operand2old = " + operand2old + ", num1 = " + num1 + ", num2 = " + num2);
+                console.log(Date());
+            } else {
+                console.log(`num1/num2 is ${num1}/${num2} ~= ${(num1/num2).toFixed(1)} to 1 decimal.`);
+                // alert(`go again num1/num2 = ${num1/num2}`);
+                runGame("division");
+            }
 
         }
     } else {
@@ -89,8 +109,8 @@ function checkAnswer() {
 
 function calculateCorrectAnswer() {
     
-    let operand1 = parseInt(document.getElementById('operand1').innerText);
-    let operand2 = parseInt(document.getElementById('operand2').innerText);
+    operand1 = parseInt(document.getElementById('operand1').innerText);
+    operand2 = parseInt(document.getElementById('operand2').innerText);
     let operator = document.getElementById("operator").innerText;
 
     if (operator === "+") {
