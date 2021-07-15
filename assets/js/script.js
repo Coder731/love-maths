@@ -1,94 +1,4 @@
-//Queue both js files combined and added to script.js
-// Queue
-// https://youtu.be/VnjBI3Zfxyc
-class Node {
-    constructor(value) {
-        this.value = value;
-        this.next = null;
-    }
-}
 
-class Queue {
-    constructor() {
-        this.front = null;
-        this.back = null;
-    }
-
-    isEmpty() {
-        return !this.front;
-    }
-
-    enqueue(value) {
-        console.log('ENQUEUE', value);
-        // create a new node with value
-        let node = new Node(value);
-
-        // if queue is empty
-        if(this.isEmpty()) {
-            // point front and back to new Node
-            this.front = this.back = node;
-        }
-        // else the queue is not empty
-        else {
-            // push node to back of the queue
-            // by pointing the last node to the new created Node
-            this.back.next = node;
-        
-            // move back pointer to new node
-            this.back = node;
-        }
-
-        this.print();
-    }
-
-    print() {
-        // If the queue is empty
-        if(this.isEmpty()) {
-            console.log('EMPTY QUEUE')
-        }
-        // Else it's not empty
-        else {
-        // temp arr
-        let tmpArr = [];
-        
-        // tmp variable to the front of the queue
-        let tmp = this.front;
-
-        // iterate through the queue
-        while(tmp) {
-        // add value into tmp array
-        tmpArr.push(tmp.value);
-
-        // move to the next elements
-        tmp = tmp.next;
-        }
-
-      // print the values
-      console.log(tmpArr.join(','));  
-        }
-    }
-    dequeue() {
-        // pointer to front of the queue
-        let node = this.front;
-        console.log('DEQUEUE', node ? node.value : '');
-        // if queue is not empty
-        if(!this.isEmpty()) {
-            // move front to the next elements
-            this.front = this.front.next;
-        }
-        // check if front is null / past the end of the queue
-        if (!this.front) {
-            // set back to null if
-            this.back = null;
-        }
-
-        // print
-        this.print();
-        
-        // return node at the front of the queue
-        return node;
-    }
-}
 
 //Wait for the DOM to finish loading before running the game
 // Get the button elements and add event listeners to them
@@ -133,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function(){
 */
 
 function runGame(gameType) {
-  for (let functionCounter=0; functionCounter< 2; functionCounter++) {
 
     // empty string for each new game, and set the focus:
     document.getElementById("answer-box").value = "";
@@ -155,22 +64,14 @@ function runGame(gameType) {
         let operand1new = num1;
         let operand2new = num2;
         
-        // from index.js
-        let q = new Queue();
-        q.enqueue(operand1old);
-        q.enqueue(operand2old);
-        q.enqueue(operand1new);
-        q.enqueue(operand2new);
-
         console.log("currently: " + "operand1old = "+ operand1old + ", operand2old = " + operand2old + ", num1 = " + num1 + ", num2 = " + num2);
         if (!(operand1old === operand1new && operand2new === operand2new) /*&& operand1old !== operand2new*/) {
             if ((((num1/num2)- Math.floor(num1/num2)) === 0)/*&&(operand1!==num1&&operand2!==num2)*/) {
-                console.log(q);
-              if (!q.includes(num1)) {
+
                 displayDivisionQuestion(num1, num2);
                 console.log("proposed: " + "operand1old = "+ operand1old + ", operand2old = " + operand2old + ", num1 = " + num1 + ", num2 = " + num2);
                 console.log(Date());
-              }
+              
             } else {
                 console.log(`num1/num2 is ${num1}/${num2} ~= ${(num1/num2).toFixed(1)} to 1 decimal.`);
                 // alert(`go again num1/num2 = ${num1/num2}`);
@@ -205,7 +106,6 @@ function checkAnswer() {
 
     runGame(calculatedAnswer[1]);
 
-  }//for loop close
 }
 
 /**
@@ -283,17 +183,15 @@ function displayDivisionQuestion(operand1, operand2) {
         document.getElementById("operand1").textContent = operand1;
         q.dequeue(operand1old);
     } 
-    // else if (operand2 > operand1) {
-    //     document.getElementById("operand1").textContent = operand2;
-    // }
+    else if (operand2 > operand1) {
+        document.getElementById("operand1").textContent = operand2;
+    }
     if (operand1 > operand2) {
         document.getElementById("operand2").textContent = operand2;
         q.dequeue(operand2old);
     } 
-    // else if (operand2 > operand1) {
-    //     document.getElementById("operand2").textContent = operand1;
-    // }
+    else if (operand2 > operand1) {
+        document.getElementById("operand2").textContent = operand1;
+    }
 
 }
-
-
